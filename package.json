@@ -12,7 +12,8 @@
 	"dependencies": {
 		"cors": "^2.8.4",
 		"dotenv": "^5.0.1",
-		"express": "^4.16.3"
+		"express": "^4.16.3",
+		"faker": "^4.1.0"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
