@@ -1,7 +1,25 @@
 {
-  "name": "simple_server",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Huynh Quang Thai",
-  "license": "MIT"
+	"name": "simple_server",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "Huynh Quang Thai",
+	"license": "MIT",
+	"scripts": {
+		"start": "node lib/index.js",
+		"compile": "babel -d lib/ src/",
+		"run": "babel -d lib/ src/ && node lib/index.js"
+	},
+	"dependencies": {
+		"cors": "^2.8.4",
+		"dotenv": "^5.0.1",
+		"express": "^4.16.3"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-core": "^6.26.3",
+		"babel-eslint": "^8.2.3",
+		"babel-preset-env": "^1.7.0",
+		"babel-preset-stage-2": "^6.24.1",
+		"eslint": "^4.19.1"
+	}
 }
