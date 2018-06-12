@@ -92,12 +92,27 @@ app.get('/api/category', (req, res) => {
 	let category = [];
 	while (total > 0) {
 		category.push({
-			title: faker.lorem.sentence(),
+			title: faker.lorem.word(),
 			thumbnail: faker.image.image()
 		});
 		total--;
 	}
 	res.send(category);
+});
+
+app.get('/api/home_banner', (req, res) => {
+	let total = req.query.total;
+	let banner = [];
+	while (total > 0) {
+		banner.push({
+			title: faker.lorem.sentence(),
+			subTitle: faker.lorem.sentence(),
+			description: faker.lorem.sentences(),
+			thumbnail: faker.image.image()
+		});
+		total--;
+	}
+	res.send(banner);
 });
 
 app.listen(process.env.PORT, () =>
