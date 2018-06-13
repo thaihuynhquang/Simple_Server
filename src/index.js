@@ -115,6 +115,20 @@ app.get('/api/home_banner', (req, res) => {
 	res.send(banner);
 });
 
+app.get('/api/question', (req, res) => {
+	let total = req.query.total;
+	let questions = [];
+	while (total > 0) {
+		questions.push({
+			username: faker.name.findName(),
+			avatar: faker.image.avatar(),
+			stars: faker.random.number()
+		});
+		total--;
+	}
+	res.send(questions);
+});
+
 app.listen(process.env.PORT, () =>
 	console.log('server listen in port: ', process.env.PORT)
 );
