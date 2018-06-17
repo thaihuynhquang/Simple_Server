@@ -1,11 +1,20 @@
 require('dotenv').config();
+import http from 'http';
 import express from 'express';
+import io from 'socket.io';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import faker from 'faker';
+const uuidv1 = require('uuid/v1');
 
 const app = express();
 
+const server = http.createServer(app);
+
+const realtime = io(server);
+
 app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
 	res.status(200);
@@ -129,6 +138,42 @@ app.get('/api/question', (req, res) => {
 	res.send(questions);
 });
 
-app.listen(process.env.PORT, () =>
+app.post('/api/user/log_in', (req, res) => {
+	const user = {
+		userId: uuidv1(),
+		username: req.body.username
+	};
+	const token = uuidv1();
+	res.send({ token, user });
+});
+
+app.post('/api/user/create_a_call', (req, res) => {
+	const callData = {
+		callerId: req.body.callerId,
+		recipientId: req.body.recipientId,
+		signalData: req.body.signalData
+	};
+	realtime.emit('hasACall', callData);
+	res.send({ success: true });
+});
+
+app.post('/api/user/anwser_a_call', (req, res) => {
+	const callData = {
+		callerId: req.body.callerId,
+		recipientId: req.body.recipientId,
+		signalData: req.body.signalData
+	};
+	realtime.emit('hasAnAnwser', callData);
+	res.send({ success: true });
+});
+
+realtime.on('connection', socket => {
+	console.log('a user connected ');
+	socket.on('disconnect', function() {
+		console.log('user disconnected');
+	});
+});
+
+server.listen(process.env.PORT, () =>
 	console.log('server listen in port: ', process.env.PORT)
 );
