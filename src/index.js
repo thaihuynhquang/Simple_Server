@@ -138,13 +138,42 @@ app.get('/api/question', (req, res) => {
 	res.send(questions);
 });
 
-app.post('/api/user/log_in', (req, res) => {
+const users = [];
+
+app.get('/api/user', (req, res) => {
+	const queryAll = req.query.filter;
+	let result = {};
+	if (queryAll.indexOf('all') != -1) {
+		result.users = users;
+	} else {
+		result.hasError = true;
+	}
+	res.send(result);
+});
+
+app.post('/api/user/sign_up', (req, res) => {
 	const user = {
-		userId: uuidv1(),
 		username: req.body.username
 	};
-	const token = uuidv1();
-	res.send({ token, user });
+	user.userId = uuidv1();
+	users.push(user);
+	res.send({ success: true });
+});
+
+app.post('/api/user/log_in', (req, res) => {
+	const user = {
+		username: req.body.username
+	};
+	const result = users.find(e => {
+		console.log('user log in ', e.username, user.username);
+		return e.username === user.username;
+	});
+	if (result) {
+		const token = uuidv1();
+		res.send({ token, user: result });
+	} else {
+		res.send({ success: false });
+	}
 });
 
 app.post('/api/user/create_a_call', (req, res) => {
@@ -154,7 +183,7 @@ app.post('/api/user/create_a_call', (req, res) => {
 		signalData: req.body.signalData
 	};
 	realtime.emit('hasACall', callData);
-	res.send({ success: true });
+	res.send({ success: true, callData });
 });
 
 app.post('/api/user/anwser_a_call', (req, res) => {
@@ -164,7 +193,7 @@ app.post('/api/user/anwser_a_call', (req, res) => {
 		signalData: req.body.signalData
 	};
 	realtime.emit('hasAnAnwser', callData);
-	res.send({ success: true });
+	res.send({ success: true, callData });
 });
 
 realtime.on('connection', socket => {
