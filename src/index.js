@@ -239,53 +239,55 @@ app.post('/auth', (req, res) => {
 	}
 });
 
-// app.get('/courses?offset=0&limit=2', (req, res) => {
-// 	const { offset, limit } = req.query;
-// 	const items = [];
-// 	for(let i = 0; i < limit; i++) {
-// 		const item = {
-// 			amount_credit: faker.finance.amount(),
-// 			banner: faker.image.image(),
-// 			created_at: faker.date.past(),
-// 			updated_at: faker.date.past(),
-// 			created_by: 2,
-// 			created_by_user: {
-// 				created_at: faker.date.past(),
-// 				updated_at: faker.date.past(),
-// 				username: faker.name.findName(),
-// 				email: faker.internet.email(),
-// 				id: faker.random.number(),
-// 				info: {
-// 					gender: 'female'
-// 				},
-// 				instructor_cv: faker.internet.url(),
-// 				instructor_description: 'HTML_Text or JSON here',
-// 				query: null,
-// 				type: 'instructor'
-// 			},
-// 			description: faker.lorem.sentence(),
-// 			id: faker.random.number(),
-// 			is_public: true,
-// 			lessons: [],
-// 			query: null,
-// 			short_description: faker.lorem.sentence(),
-// 			start: faker.date.past(),
-// 			title: faker.lorem.sentence(),
-// 			type: 'live',
-// 			user_enrolls: [],
-// 			user_instructors: [],
-// 			video_demo: null
-// 		};
-// 	}
-// 	const result = {
-// 		items: [],
-// 		pagination: {
-// 			limit: limit,
-// 			offset: offset,
-// 			total: 100
-// 		}
-// 	};
-// });
+app.get('/courses', (req, res) => {
+	const { offset, limit } = req.query;
+	const items = [];
+	for (let i = 0; i < limit; i++) {
+		const item = {
+			amount_credit: faker.finance.amount(),
+			banner: faker.image.image(),
+			created_at: faker.date.past(),
+			updated_at: faker.date.past(),
+			created_by: 2,
+			created_by_user: {
+				created_at: faker.date.past(),
+				updated_at: faker.date.past(),
+				username: faker.name.findName(),
+				email: faker.internet.email(),
+				id: faker.random.number(),
+				info: {
+					gender: 'female'
+				},
+				instructor_cv: faker.internet.url(),
+				instructor_description: 'HTML_Text or JSON here',
+				query: null,
+				type: 'instructor'
+			},
+			description: faker.lorem.sentence(),
+			id: faker.random.number(),
+			is_public: true,
+			lessons: [],
+			query: null,
+			short_description: faker.lorem.sentence(),
+			start: faker.date.past(),
+			title: faker.lorem.sentence(),
+			type: 'live',
+			user_enrolls: [],
+			user_instructors: [],
+			video_demo: null
+		};
+		items.push(item);
+	}
+	const result = {
+		items,
+		pagination: {
+			limit: limit,
+			offset: offset,
+			total: 100
+		}
+	};
+	res.send(result);
+});
 
 server.listen(process.env.PORT, () =>
 	console.log('server listen in port: ', process.env.PORT)
